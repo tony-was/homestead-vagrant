@@ -1,0 +1,4 @@
+sites/*
+!sites/.gitkeep
+.idea
+.DS_Store
