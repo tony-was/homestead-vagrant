@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+echo "Setting up virual server for $1"
+
 block="server {
     listen 80;
-    server_name $1;
-    root "$2";
+    server_name $1.dev;
+    root "/home/vagrant/sites/$1.dev/public";
 
     index index.html index.htm index.php;
 
@@ -17,7 +19,7 @@ block="server {
     location = /robots.txt  { access_log off; log_not_found off; }
 
     access_log off;
-    error_log  /var/log/nginx/$1-error.log error;
+    error_log  /var/log/nginx/$1.dev-error.log error;
 
     error_page 404 /index.php;
 
@@ -40,7 +42,7 @@ block="server {
 }
 "
 
-echo "$block" > "/etc/nginx/sites-available/$1"
-ln -fs "/etc/nginx/sites-available/$1" "/etc/nginx/sites-enabled/$1"
-service nginx restart
-service php5-fpm restart
+echo "$block" > "/etc/nginx/sites-available/$1.dev"
+ln -fs "/etc/nginx/sites-available/$1.dev" "/etc/nginx/sites-enabled/$1.dev"
+service nginx reload
+service php5-fpm reload

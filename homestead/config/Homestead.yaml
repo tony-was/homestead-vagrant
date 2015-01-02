@@ -1,0 +1,17 @@
+---
+ip: "192.168.10.10"
+memory: 2048
+cpus: 1
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+    - map: ~/[your-laravel-base-path]/sites
+      to: /home/vagrant/sites
+
+sites:
+    - example
+    - example2

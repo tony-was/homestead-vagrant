@@ -46,32 +46,29 @@ class Homestead
     projects = []
     # Install All The Configured Nginx Sites
     settings["sites"].each do |site|
+
+      projects.push("#{site}.dev")
+
       config.vm.provision "shell" do |s|
-          if (site.has_key?("hhvm") && site["hhvm"])
-            s.inline = "bash /vagrant/scripts/serve-hhvm.sh $1 $2"
-            s.args = [site["map"], site["to"]]
-          else
-            s.inline = "bash /vagrant/scripts/serve.sh $1 $2"
-            s.args = [site["map"], site["to"]]
-          end
-          projects.push(site["map"])
+
+        #Set up virtual server, database, project, .env file
+        s.inline = "bash /vagrant/scripts/serve.sh $1 && bash /vagrant/scripts/create-mysql.sh $1 && bash /vagrant/scripts/git.sh $1 && bash /vagrant/scripts/create-env.sh $1 && bash /vagrant/scripts/composer-update.sh $1"
+        s.args = [site]
+
+      end
+
+      config.vm.provision "shell" do |s|
+
+        #Run npm install as non sudo user
+        s.inline = "bash /vagrant/scripts/npm-install.sh $1"
+        s.args = [site]
+        s.privileged = false
+
       end
     end
 
+    #Set up hosts file
     config.hostsupdater.aliases = projects
-
-    # Configure All Of The Configured Databases
-    settings["databases"].each do |db|
-        config.vm.provision "shell" do |s|
-            s.path = "./scripts/create-mysql.sh"
-            s.args = [db]
-        end
-
-        config.vm.provision "shell" do |s|
-            s.path = "./scripts/create-postgres.sh"
-            s.args = [db]
-        end
-    end
 
     # Configure All Of The Server Environment Variables
     if settings.has_key?("variables")
