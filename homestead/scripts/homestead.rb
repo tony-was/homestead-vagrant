@@ -4,6 +4,12 @@ class Homestead
     config.vm.box = "laravel/homestead"
     config.vm.hostname = "homestead.dev"
 
+    if !Vagrant.has_plugin? 'vagrant-hostsupdater'
+      config.vm.provision :host_shell do |host_shell|
+        host_shell.inline = 'vagrant plugin install vagrant-hostsupdater'
+      end
+    end
+
     # Configure A Private Network IP
     config.vm.network :private_network, ip: settings["ip"] ||= "192.168.10.10"
 
