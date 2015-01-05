@@ -2,3 +2,4 @@ sites/*
 !sites/.gitkeep
 .idea
 .DS_Store
+homestead/config/Homestead.yaml
