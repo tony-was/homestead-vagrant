@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
+NAME=$1
+TYPE=$2
+NAME_EXT="$NAME.dev"
 
-DIR="/home/vagrant/sites/$1.dev"
+case $TYPE in
+    ["laravel"]*)
+        DIR="/home/vagrant/sites/$NAME_EXT"
+    ;;
+    ["wordpress"]*)
+        DIR="/home/vagrant/sites/$NAME_EXT/web/app/themes/roots"/
+    ;;
+esac
 
-echo "npm install script for $1"
-
-if [ ! -d "$DIR" ]; then
-    echo "$DIR not found. Cannot run npm install"
-    mkdir $DIR
+if [ -f $DIR/package.json ]; then
+    echo "Running npm install for $NAME"
+    cd $DIR
+    npm install --silent > /dev/null 2>&1
 else
-     echo "Running npm install in $DIR"
-     cd $DIR
-     npm install
+     echo "Cannot run npm install for $NAME. Need package.json file"
 fi

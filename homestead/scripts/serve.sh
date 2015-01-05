@@ -1,11 +1,25 @@
 #!/usr/bin/env bash
 
-echo "Setting up virual server for $1"
+NAME=$1
+TYPE=$2
+NAME_EXT="$NAME.dev"
+
+echo "Setting up virual server for $NAME"
+case $TYPE in
+    ["laravel"]*)
+        ROOT="/home/vagrant/sites/$NAME_EXT/public"
+        echo "$NAME is a Laravel project."
+    ;;
+    ["wordpress"]*)
+        ROOT="/home/vagrant/sites/$NAME_EXT/web"
+        echo "$NAME is a WordPress project."
+    ;;
+esac
 
 block="server {
     listen 80;
-    server_name $1.dev;
-    root "/home/vagrant/sites/$1.dev/public";
+    server_name $NAME_EXT;
+    root "$ROOT";
 
     index index.html index.htm index.php;
 
@@ -19,7 +33,7 @@ block="server {
     location = /robots.txt  { access_log off; log_not_found off; }
 
     access_log off;
-    error_log  /var/log/nginx/$1.dev-error.log error;
+    error_log  /var/log/nginx/$NAME_EXT-error.log error;
 
     error_page 404 /index.php;
 
@@ -42,7 +56,5 @@ block="server {
 }
 "
 
-echo "$block" > "/etc/nginx/sites-available/$1.dev"
-ln -fs "/etc/nginx/sites-available/$1.dev" "/etc/nginx/sites-enabled/$1.dev"
-service nginx reload
-service php5-fpm reload
+echo "$block" > "/etc/nginx/sites-available/$NAME_EXT"
+ln -fs "/etc/nginx/sites-available/$NAME_EXT" "/etc/nginx/sites-enabled/$NAME_EXT"

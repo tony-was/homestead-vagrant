@@ -43,28 +43,35 @@ class Homestead
       config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil
     end
 
+    #Install AU Locale
+    config.vm.provision "shell" do |s|
+        s.inline = "bash /vagrant/scripts/locale.sh && bash /vagrant/scripts/wp-cli.sh"
+    end
+
     projects = []
     # Install All The Configured Nginx Sites
     settings["sites"].each do |site|
 
-      projects.push("#{site}.dev")
+      projects.push("#{site['name']}.dev")
+
+      args = [site["name"], site["type"]]
+      if(site.has_key?("repo"))
+        args.push(site["repo"])
+      end
 
       config.vm.provision "shell" do |s|
-
         #Set up virtual server, database, project, .env file
-        s.inline = "bash /vagrant/scripts/serve.sh $1 && bash /vagrant/scripts/create-mysql.sh $1 && bash /vagrant/scripts/git.sh $1 && bash /vagrant/scripts/create-env.sh $1 && bash /vagrant/scripts/composer-update.sh $1"
-        s.args = [site]
-
+        s.inline = "bash /vagrant/scripts/serve.sh $1 $2 && bash /vagrant/scripts/create-mysql.sh $1 && bash /vagrant/scripts/git.sh $1 $2 $3 && bash /vagrant/scripts/create-env.sh $1 $2 && bash /vagrant/scripts/composer-update.sh $1"
+        s.args = args
       end
 
-      config.vm.provision "shell" do |s|
-
+      #config.vm.provision "shell" do |s|
         #Run npm install as non sudo user
-        s.inline = "bash /vagrant/scripts/npm-install.sh $1"
-        s.args = [site]
-        s.privileged = false
+       # s.inline = "bash /vagrant/scripts/npm-install.sh $1 $2"
+       # s.args = [site["name"], site["type"]]
+       # s.privileged = false
+      #end
 
-      end
     end
 
     #Set up hosts file
@@ -80,13 +87,13 @@ class Homestead
       end
 
       config.vm.provision "shell" do |s|
-          s.inline = "service php5-fpm restart"
+          s.inline = "service nginx reload && service php5-fpm reload"
       end
     end
 
     # Update Composer On Every Provision
-    config.vm.provision "shell" do |s|
-      s.inline = "/usr/local/bin/composer self-update"
-    end
+    #config.vm.provision "shell" do |s|
+     # s.inline = "/usr/local/bin/composer self-update"
+    #end
   end
 end

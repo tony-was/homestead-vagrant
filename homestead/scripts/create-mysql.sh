@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 DB=$1;
-echo "Creating database for $DB"
-mysql -uhomestead -psecret -e "DROP DATABASE IF EXISTS $DB";
-mysql -uhomestead -psecret -e "CREATE DATABASE $DB";
+mysqlshow -uhomestead -psecret $DB > /dev/null 2>&1
+if [ ! $? -eq 0 ]; then
+    echo "Creating database for $DB"
+    mysql -uhomestead -psecret -e "CREATE DATABASE IF NOT EXISTS $DB" > /dev/null 2>&1
+else
+    echo "Database for $DB already exists"
+fi

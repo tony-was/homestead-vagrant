@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-DIR="/home/vagrant/sites/$1.dev"
-
-echo "Composer update script for $1"
+NAME=$1
+NAME_EXT="$NAME.dev"
+DIR="/home/vagrant/sites/$NAME_EXT"
 
 if [ ! -d "$DIR" ]; then
     echo "$DIR not found. Creating $DIR"
     mkdir $DIR
 fi
 
-if [ "$(ls -A $DIR)" ]; then
-    echo "Running composer update in $DIR"
+if [ -f $DIR/composer.json ]; then
+    echo "Running composer update for $NAME"
     cd $DIR
-    composer update
+    composer update --no-interaction --quiet --optimize-autoloader
 else
-    echo "No project in $DIR"
+    echo "Not composer.json found for $NAME"
 fi

@@ -9,9 +9,13 @@ keys:
     - ~/.ssh/id_rsa
 
 folders:
-    - map: ~/[your-laravel-base-path]/sites
+    - map: ~/[your-local-dev-base-path]/sites
       to: /home/vagrant/sites
 
+#The repo var is only needed when cloning an existing project, for a new project leave this out.
 sites:
-    - example
-    - example2
+    - name: example
+      type: wordpress/laravel
+      repo: https://github.com/username/repo.git
+    - name: example2
+      type: wordpress/laravel
