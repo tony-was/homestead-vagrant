@@ -13,13 +13,11 @@ unless Vagrant.has_plugin?("vagrant-host-shell")
   raise 'vagrant-host-shell missing, please install the plugin: vagrant plugin install vagrant-host-shell'
 end
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+unless Vagrant.has_plugin?("vagrant-hostsupdater")
+  raise 'vagrant-hostsupdater missing, please install the plugin: vagrant plugin install vagrant-hostsupdater'
+end
 
-    if !Vagrant.has_plugin? 'vagrant-hostsupdater'
-        config.vm.provision :host_shell do |host_shell|
-            host_shell.inline = 'vagrant plugin install vagrant-hostsupdater'
-        end
-    end
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	if File.exists? aliasesPath then
 		config.vm.provision "file", source: aliasesPath, destination: "~/.bash_aliases"
