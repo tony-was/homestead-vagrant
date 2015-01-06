@@ -12,6 +12,7 @@ fi
 if [ -f $DIR/composer.json ]; then
     echo "Running composer update for $NAME"
     cd $DIR
+    composer self-update --quite
     composer update --no-interaction --quiet --optimize-autoloader
 else
     echo "Not composer.json found for $NAME"
