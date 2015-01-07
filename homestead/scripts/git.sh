@@ -7,10 +7,10 @@ NAME_EXT="$NAME.dev"
 
 case $TYPE in
     ["laravel"]*)
-        GIT_REPO="https://github.com/tony-was/laravel-base.git"
+        GIT_REPO="git@github.com:tony-was/laravel-base.git"
     ;;
     ["wordpress"]*)
-        GIT_REPO="https://github.com/tony-was/bedrock-was.git"
+        GIT_REPO="git@github.com:tony-was/bedrock-was.git"
     ;;
 esac
 
@@ -27,10 +27,10 @@ else
     cd $DIR
     if [[ ! -z "$REPO" ]]; then
         echo "Cloning existing $NAME project from repo"
-        git clone $REPO .
+        git clone $REPO . > /dev/null 2>&1
     else
         echo "Cloning base $TYPE project"
-        git clone --depth=1 $GIT_REPO .
+        git clone --depth=1 $GIT_REPO . > /dev/null 2>&1
         rm -rf .git
     fi
 fi
@@ -40,7 +40,7 @@ if [ $TYPE == "wordpress" ]; then
         echo "Installing roots theme"
         mkdir $DIR/web/app/themes/roots
         cd $DIR/web/app/themes/roots
-        git clone --depth=1 https://github.com/tony-was/roots-was.git .
+        git clone --depth=1 git@github.com:tony-was/roots-was.git . > /dev/null 2>&1
         rm -rf .git
     else
         echo "Roots theme already exists for $NAME"

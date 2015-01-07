@@ -8,6 +8,9 @@ authorize: ~/.ssh/id_rsa.pub
 keys:
     - ~/.ssh/id_rsa
 
+known_hosts:
+    - github.com
+
 folders:
     - map: ~/dev/homestead-vagrant/sites
       to: /home/vagrant/sites

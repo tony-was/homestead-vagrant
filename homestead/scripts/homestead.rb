@@ -7,6 +7,9 @@ class Homestead
     # Configure A Private Network IP
     config.vm.network :private_network, ip: settings["ip"] ||= "192.168.10.10"
 
+    config.ssh.private_key_path = [ '~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa' ]
+    config.ssh.forward_agent = true
+
     # Configure A Few VirtualBox Settings
     config.vm.provider "virtualbox" do |vb|
       vb.name = 'homestead'
@@ -29,12 +32,22 @@ class Homestead
       s.args = [File.read(File.expand_path(settings["authorize"]))]
     end
 
+
     # Copy The SSH Private Keys To The Box
     settings["keys"].each do |key|
       config.vm.provision "shell" do |s|
         s.privileged = false
         s.inline = "echo \"$1\" > /home/vagrant/.ssh/$2 && chmod 600 /home/vagrant/.ssh/$2"
         s.args = [File.read(File.expand_path(key)), key.split('/').last]
+      end
+    end
+
+    # Configure known_hosts On Box
+    settings["known_hosts"].each do |host|
+      config.vm.provision :shell do |s|
+        s.privileged = false
+        s.inline = "mkdir -p $1 && touch $2 && ssh-keyscan -H $3 >> $2 && chmod 600 $2"
+        s.args = ["/home/vagrant/.ssh", "/home/vagrant/.ssh/known_hosts", host]
       end
     end
 
@@ -59,14 +72,39 @@ class Homestead
         args.push(site["repo"])
       end
 
+      #Set up virutal Server
       config.vm.provision "shell" do |s|
-        #Set up virtual server, database, project, .env file
-        s.inline = "bash /vagrant/scripts/serve.sh $1 $2 && bash /vagrant/scripts/create-mysql.sh $1 && bash /vagrant/scripts/git.sh $1 $2 $3 && bash /vagrant/scripts/create-env.sh $1 $2 && bash /vagrant/scripts/composer-update.sh $1"
+        s.inline = "bash /vagrant/scripts/serve.sh $1 $2"
         s.args = args
       end
 
+      #Create database
       config.vm.provision "shell" do |s|
-        #Run npm install as non sudo user
+        s.inline = "bash /vagrant/scripts/create-mysql.sh $1 "
+        s.args = args
+      end
+
+      #Pull repository
+      config.vm.provision "shell" do |s|
+        s.inline = "bash /vagrant/scripts/git.sh $1 $2 $3"
+        s.args = args
+        s.privileged = false
+      end
+
+      #Create .env file
+      config.vm.provision "shell" do |s|
+        s.inline = "bash /vagrant/scripts/create-env.sh $1 $2"
+        s.args = args
+      end
+
+      #Run composer update
+      config.vm.provision "shell" do |s|
+        s.inline = "bash /vagrant/scripts/composer-update.sh $1"
+        s.args = args
+      end
+
+      #Run npm install
+      config.vm.provision "shell" do |s|
         s.inline = "bash /vagrant/scripts/npm-install.sh $1 $2"
         s.args = [site["name"], site["type"]]
         s.privileged = false
