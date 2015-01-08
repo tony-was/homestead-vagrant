@@ -61,6 +61,11 @@ class Homestead
         s.inline = "bash /vagrant/scripts/locale.sh && bash /vagrant/scripts/wp-cli.sh"
     end
 
+    #Composer self-update
+    config.vm.provision "shell" do |s|
+      s.inline = "composer self-update > /dev/null 2>&1"
+    end
+
     projects = []
     # Install All The Configured Nginx Sites
     settings["sites"].each do |site|
