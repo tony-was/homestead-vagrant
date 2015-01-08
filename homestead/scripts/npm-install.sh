@@ -15,7 +15,7 @@ esac
 if [ -f $DIR/package.json ]; then
     echo "Running npm install for $NAME"
     cd $DIR
-    npm install --silent > /dev/null 2>&1
+    npm install
 else
      echo "Cannot run npm install for $NAME. Need package.json file"
 fi
