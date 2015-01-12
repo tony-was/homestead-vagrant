@@ -130,7 +130,7 @@ class Homestead
       end
 
       config.vm.provision "shell" do |s|
-          s.inline = "service nginx restart && service php5-fpm restart"
+          s.inline = "service php5-fpm restart"
       end
     end
 

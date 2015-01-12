@@ -10,9 +10,9 @@ if [ ! -d "$DIR" ]; then
 fi
 
 if [ -f $DIR/composer.json ]; then
-    echo "Running composer install for $NAME"
+    echo "Running composer update for $NAME"
     cd $DIR
-    composer install --no-interaction --optimize-autoloader
+    composer update --no-interaction --optimize-autoloader
 else
     echo "Not composer.json found for $NAME"
 fi

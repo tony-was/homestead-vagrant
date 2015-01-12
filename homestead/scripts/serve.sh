@@ -58,3 +58,5 @@ block="server {
 
 echo "$block" > "/etc/nginx/sites-available/$NAME_EXT"
 ln -fs "/etc/nginx/sites-available/$NAME_EXT" "/etc/nginx/sites-enabled/$NAME_EXT"
+service nginx restart
+service php5-fpm restart
