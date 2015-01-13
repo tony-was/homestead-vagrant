@@ -5,22 +5,28 @@ NAME_EXT="$NAME.dev"
 
 DIR="/home/vagrant/sites/$NAME_EXT"
 case $TYPE in
-    ["laravel"]*)
-        ENV="APP_ENV=development
-DB_HOST=localhost
-DB_DATABASE=$NAME
-DB_USERNAME=homestead
-DB_PASSWORD=secret"
-    ;;
-    ["wordpress"]*)
-        ENV="DB_NAME=$NAME
-DB_USER=homestead
-DB_PASSWORD=secret
-DB_HOST=localhost
-WP_ENV=development
-WP_HOME=http://$NAME_EXT
-WP_SITEURL=http://$NAME_EXT/wp"
-    ;;
+  'laravel')
+  ENV="APP_ENV=development
+  DB_HOST=localhost
+  DB_DATABASE=$NAME
+  DB_USERNAME=homestead
+  DB_PASSWORD=secret"
+  ;;
+  'wordpress')
+  ENV="DB_NAME=$NAME
+  DB_USER=homestead
+  DB_PASSWORD=secret
+  DB_HOST=localhost
+  WP_ENV=development
+  WP_HOME=http://$NAME_EXT
+  WP_SITEURL=http://$NAME_EXT/wp"
+  ;;
+  'drupal')
+  ENV="DB_NAME=$NAME
+  DB_USER=homestead
+  DB_PASSWORD=secret
+  DB_HOST=localhost"
+  ;;
 esac
 
 

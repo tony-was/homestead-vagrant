@@ -4,12 +4,15 @@ TYPE=$2
 NAME_EXT="$NAME.dev"
 
 case $TYPE in
-    ["laravel"]*)
-        DIR="/home/vagrant/sites/$NAME_EXT"
-    ;;
-    ["wordpress"]*)
-        DIR="/home/vagrant/sites/$NAME_EXT/web/app/themes/roots"/
-    ;;
+  'laravel')
+  DIR="/home/vagrant/sites/$NAME_EXT"
+  ;;
+  'wordpress')
+  DIR="/home/vagrant/sites/$NAME_EXT/web/app/themes/roots"/
+  ;;
+  'drupal')
+  DIR="/home/vagrant/sites/$NAME_EXT"
+  ;;
 esac
 
 if [ -f $DIR/package.json ]; then
