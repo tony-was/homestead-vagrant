@@ -6,14 +6,18 @@ NAME_EXT="$NAME.dev"
 
 echo "Setting up virual server for $NAME"
 case $TYPE in
-    ["laravel"]*)
-        ROOT="/home/vagrant/sites/$NAME_EXT/public"
-        echo "$NAME is a Laravel project."
-    ;;
-    ["wordpress"]*)
-        ROOT="/home/vagrant/sites/$NAME_EXT/web"
-        echo "$NAME is a WordPress project."
-    ;;
+  'laravel')
+  ROOT="/home/vagrant/sites/$NAME_EXT/public"
+  echo "$NAME is a Laravel project."
+  ;;
+  'wordpress')
+  ROOT="/home/vagrant/sites/$NAME_EXT/web"
+  echo "$NAME is a WordPress project."
+  ;;
+  'drupal')
+  ROOT="/home/vagrant/sites/$NAME_EXT/web"
+  echo "$NAME is a Drupal project."
+  ;;
 esac
 
 block="server {

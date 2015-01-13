@@ -6,12 +6,15 @@ REPO=$3
 NAME_EXT="$NAME.dev"
 
 case $TYPE in
-    ["laravel"]*)
-        GIT_REPO="git@github.com:tony-was/laravel-base.git"
-    ;;
-    ["wordpress"]*)
-        GIT_REPO="git@github.com:tony-was/bedrock-was.git"
-    ;;
+  'laravel')
+  GIT_REPO="git@github.com:tony-was/laravel-base.git"
+  ;;
+  'wordpress')
+  GIT_REPO="git@github.com:tony-was/bedrock-was.git"
+  ;;
+  'drupal')
+  GIT_REPO="git@github.com:ryan-was/drupal-base.git"
+  ;;
 esac
 
 DIR="/home/vagrant/sites/$NAME_EXT"
