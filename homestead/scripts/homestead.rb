@@ -72,7 +72,7 @@ class Homestead
 
       projects.push("#{site['name']}.dev")
 
-      args = [site["name"], site["type"]]
+      args = [site["name"], site["type"], site["theme"]]
       if(site.has_key?("repo"))
         args.push(site["repo"])
       end
@@ -85,13 +85,13 @@ class Homestead
 
       #Create database
       config.vm.provision "shell" do |s|
-        s.inline = "bash /vagrant/scripts/create-mysql.sh $1 "
+        s.inline = "bash /vagrant/scripts/create-mysql.sh $1"
         s.args = args
       end
 
       #Pull repository
       config.vm.provision "shell" do |s|
-        s.inline = "bash /vagrant/scripts/git.sh $1 $2 $3"
+        s.inline = "bash /vagrant/scripts/git.sh $1 $2 $3 $4"
         s.args = args
         s.privileged = false
       end
@@ -110,8 +110,8 @@ class Homestead
 
       #Run npm install
       config.vm.provision "shell" do |s|
-        s.inline = "bash /vagrant/scripts/npm-install.sh $1 $2"
-        s.args = [site["name"], site["type"]]
+        s.inline = "bash /vagrant/scripts/npm-install.sh $1 $2 $3"
+        s.args = args
         s.privileged = false
       end
 

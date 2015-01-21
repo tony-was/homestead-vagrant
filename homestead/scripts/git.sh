@@ -2,7 +2,8 @@
 
 NAME=$1
 TYPE=$2
-REPO=$3
+THEME=$3
+REPO=$4
 NAME_EXT="$NAME.dev"
 
 case $TYPE in
@@ -39,13 +40,13 @@ else
 fi
 
 if [ $TYPE == "wordpress" ]; then
-    if [ ! -d "$DIR/web/app/themes/roots" ]; then
-        echo "Installing roots theme"
-        mkdir $DIR/web/app/themes/roots
-        cd $DIR/web/app/themes/roots
+    if [ ! -d "$DIR/web/app/themes/$THEME" ]; then
+        echo "Installing roots theme in $THEME dir"
+        mkdir $DIR/web/app/themes/$THEME
+        cd $DIR/web/app/themes/$THEME
         git clone --depth=1 git@github.com:tony-was/roots-was.git . > /dev/null 2>&1
         rm -rf .git
     else
-        echo "Roots theme already exists for $NAME"
+        echo "Roots theme already exists for $NAME in $THEME dir"
     fi
 fi
