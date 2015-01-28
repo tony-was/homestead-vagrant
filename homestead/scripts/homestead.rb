@@ -42,6 +42,13 @@ class Homestead
       end
     end
 
+    # Copy The SSL Keys To The Box
+    settings["keys"].each do |key|
+      config.vm.provision "shell" do |s|
+        s.inline = "mkdir -p /etc/nginx/ssl/ && cp -i /vagrant/scripts/ssl/server.crt /etc/nginx/ssl/server.crt && cp -i /vagrant/scripts/ssl/server.csr /etc/nginx/ssl/server.csr && cp -i /vagrant/scripts/ssl/server.key /etc/nginx/ssl/server.key && cp -i /vagrant/scripts/ssl/server.key.org /etc/nginx/ssl/server.key.org"
+      end
+    end
+
     # Configure known_hosts On Box
     settings["known_hosts"].each do |host|
       config.vm.provision :shell do |s|
