@@ -32,7 +32,6 @@ class Homestead
       s.args = [File.read(File.expand_path(settings["authorize"]))]
     end
 
-
     # Copy The SSH Private Keys To The Box
     settings["keys"].each do |key|
       config.vm.provision "shell" do |s|
