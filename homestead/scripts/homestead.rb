@@ -106,12 +106,14 @@ class Homestead
       config.vm.provision "shell" do |s|
         s.inline = "bash /vagrant/scripts/create-env.sh $1 $2"
         s.args = args
+        s.privileged = false
       end
 
       #Run composer update
       config.vm.provision "shell" do |s|
         s.inline = "bash /vagrant/scripts/composer-update.sh $1"
         s.args = args
+        s.privileged = false
       end
 
       #Run npm install
