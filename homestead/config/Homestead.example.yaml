@@ -10,6 +10,7 @@ keys:
 
 known_hosts:
     - github.com
+    - bitbucket.org
 
 folders:
     - map: ~/dev/homestead-vagrant/sites
@@ -20,7 +21,7 @@ sites:
     - name: example
       type: wordpress/laravel
       theme: theme-dir
-      repo: https://github.com/username/repo.git
+      repo: git@bitbucket.org:wearesocial/repo.git
     - name: example2
       theme: theme-dir
       type: wordpress/laravel
