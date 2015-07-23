@@ -6,6 +6,10 @@ NAME_EXT="$NAME.dev"
 
 echo "Setting up virual server for $NAME"
 case $TYPE in
+  'generic')
+  ROOT="/home/vagrant/sites/$NAME_EXT/public"
+  echo "$NAME is a generic project."
+  ;;
   'laravel')
   ROOT="/home/vagrant/sites/$NAME_EXT/public"
   echo "$NAME is a Laravel project."
@@ -25,6 +29,8 @@ block="server {
     listen 443 ssl;
     ssl_certificate /etc/nginx/ssl/server.crt;
     ssl_certificate_key /etc/nginx/ssl/server.key;
+
+    client_max_body_size 100M;
 
     server_name $NAME_EXT;
     root "$ROOT";
@@ -56,6 +62,7 @@ block="server {
         fastcgi_intercept_errors on;
         fastcgi_buffer_size 16k;
         fastcgi_buffers 4 16k;
+        fastcgi_read_timeout 600;
     }
 
     location ~ /\.ht {
