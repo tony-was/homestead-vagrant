@@ -4,7 +4,9 @@ NAME=$1
 TYPE=$2
 THEME=$3
 REPO=$4
+DIR_SITES="/home/vagrant/sites"
 NAME_EXT="$NAME.dev"
+DIR="$DIR_SITES/$NAME_EXT"
 
 case $TYPE in
   'laravel')
@@ -18,20 +20,22 @@ case $TYPE in
   ;;
 esac
 
-DIR="/home/vagrant/sites/$NAME_EXT"
 
-if [ ! -d "$DIR" ]; then
-    echo "Site folder for $NAME not found. Creating..."
-    mkdir $DIR
-fi
+#
+#if [ ! -d "$DIR" ]; then
+#    echo "Site folder for $NAME not found. Creating..."
+#    mkdir $DIR
+#fi
 
-if [ "$(ls -A $DIR)" ]; then
+if [ -d $DIR ]; then
      echo "$NAME is already an established project"
 else
-    cd $DIR
+    cd $DIR_SITES
     if [[ ! -z "$REPO" ]]; then
         echo "Cloning existing $NAME project from repo"
-        git clone $REPO . > /dev/null 2>&1
+        pwd
+        echo "git clone $REPO $NAME_EXT > /dev/null 2>&1"
+        git clone $REPO $NAME_EXT #> /dev/null 2>&1
     else
         echo "Cloning base $TYPE project"
         git clone --depth=1 $GIT_REPO . > /dev/null 2>&1

@@ -25,3 +25,50 @@ sites:
     - name: example2
       theme: theme-dir
       type: wordpress/laravel
+
+
+
+# Another example (working)
+---
+ip: "192.168.10.10"
+memory: 2048
+cpus: 1
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+known_hosts:
+    - github.com
+    - bitbucket.org
+
+folders:
+    - map: ~/Development/repositories/homestead-vagrant/sites
+      to: /home/vagrant/sites
+
+#The repo var is only needed when cloning an existing project, for a new project leave this out.
+sites:
+    - name: ausimm-bulletin
+      type: wordpress
+      theme: roots
+      repo: ssh://git@github.com:/wearesocial/ausimmbulletin.git
+
+sites:
+    - name: travel-weekly
+      type: wordpress
+      theme: travelweekly
+      repo: ssh://git@github.com:/wearesocial/travelweekly.git
+
+sites:
+    - name: thenibbler
+      type: wordpress
+      theme: travel-weekly-child
+      repo: ssh://git@github.com:/wearesocial/travelweekly.git
+
+sites:
+    - name: bandt
+      type: wordpress
+      theme: bandt
+      repo: ssh://git@bitbucket.org:/wearesocial/b-t.git
+
